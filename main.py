@@ -161,6 +161,7 @@ app.add_middleware(
     allow_headers=['*'], # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
 )
 
+
 @app.post("/upload")
 async def create_upload_file(file: UploadFile = File(...)):
     file_name = file.filename
