@@ -15,7 +15,7 @@ import joblib
 import pandas as pd
 import nltk
 from nltk.corpus import stopwords
-
+from fastapi.middleware.cors import CORSMiddleware
 from nltk.tokenize import word_tokenize
 import sklearn
 
@@ -161,6 +161,14 @@ def stopword_removal(text):
 
 app = FastAPI()
  
+ 
+app.add_middleware(
+    CORSMiddleware, # https://fastapi.tiangolo.com/tutorial/cors/
+    allow_origins=['*'], # wildcard to allow all, more here - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+    allow_credentials=True, # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
+    allow_methods=['*'], # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods
+    allow_headers=['*'], # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
+)
 
 @app.post("/upload")
 async def create_upload_file(file: UploadFile = File(...)):
