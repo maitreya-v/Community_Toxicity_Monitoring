@@ -117,26 +117,20 @@ class ChatOcr:
 
 
 def check_toxicity(text):
-    # Load the logistic regression model
     model_filename = 'models/logistic_regression_model.joblib'
     loaded_model = joblib.load(model_filename)
     nltk.download("stopwords")
-    # Load the fitted TF-IDF vectorizer
     vectorizer_filename = 'models/tfidf_vectorizer.pkl'
     loaded_vectorizer = joblib.load(vectorizer_filename)
 
     
-    # Create a DataFrame with a single sentence
     sentence = stopword_removal(text)
     df = pd.DataFrame({'text_column': [sentence]})
 
-    # Vectorize the sentence using the loaded vectorizer
     X_sentence_tfidf = loaded_vectorizer.transform(df['text_column'])
 
-    # Make a prediction using the loaded model
     prediction = loaded_model.predict(X_sentence_tfidf)
 
-    # The 'prediction' variable now contains the predicted class
     prediction_dictionary = {
         "0":"Not Toxic",
         "1":"Toxic"
@@ -147,10 +141,7 @@ def stopword_removal(text):
     stop_words = set(stopwords.words('english'))
   
     word_tokens = word_tokenize(text)
-    # converts the words in word_tokens to lower case and then checks whether
-    #they are present in stop_words or not
     filtered_sentence = [w for w in word_tokens if not w.lower() in stop_words]
-    #with no lower case conversion
     filtered_sentence = []
     
     for w in word_tokens:
